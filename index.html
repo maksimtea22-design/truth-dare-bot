@@ -4,82 +4,128 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
 
-    <!-- 🔥 Важно для Telegram Mini App: отключаем кэширование -->
+    <!-- Telegram Mini App -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-
-    <!-- Подключаем Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <title>Правда или Действие — Mini App</title>
+    <title>Правда или Действие ✦ Mini App</title>
     <style>
-        /* Твои старые стили (немного доработаны под Telegram) */
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
+
         body {
             font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
-            background: linear-gradient(145deg, #1a1b2f 0%, #2a1e3a 100%);
+            background: linear-gradient(145deg, #0c0b1a 0%, #1e1530 100%);
             min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            padding: 16px;
+            padding: 16px 12px 24px;
             color: #f0e9ff;
-            /* Учитываем отступы в Telegram Mini App */
-            margin: 0;
-            /* Плавный переход для темы (если Telegram меняет тему) */
-            transition: background 0.2s;
         }
-        .card {
-            background: rgba(20, 15, 35, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 42px;
-            border: 1px solid rgba(255, 140, 200, 0.25);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255, 105, 180, 0.2) inset;
+
+        /* главная карточка — теперь сверху */
+        .card-main {
             width: 100%;
             max-width: 500px;
+            margin-bottom: 24px;
+            perspective: 1000px;
+        }
+
+        .card-inner {
+            background: rgba(25, 20, 45, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid rgba(180, 130, 255, 0.3);
+            border-radius: 48px;
             padding: 28px 20px 32px;
-            transition: 0.3s;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 30px rgba(160, 100, 255, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
         }
-        h1 {
-            font-size: 2.1rem;
+
+        .card-inner::before {
+            content: "♥︎";
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            font-size: 100px;
+            opacity: 0.03;
+            color: #ffa0e0;
+            transform: rotate(15deg);
+            pointer-events: none;
+        }
+
+        .card-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff4d7d, #b14b9b);
+            border-radius: 60px;
+            padding: 6px 20px;
+            font-size: 0.9rem;
             font-weight: 700;
-            text-align: center;
-            background: linear-gradient(135deg, #ffb6d9, #c0a0ff, #a0d0ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
+            color: white;
+            text-transform: uppercase;
+            box-shadow: 0 4px 10px rgba(255, 70, 140, 0.4);
+            margin-bottom: 20px;
         }
-        .sub {
-            text-align: center;
-            color: #bbaaff;
-            margin-bottom: 28px;
-            font-size: 1.05rem;
-            border-bottom: 1px dashed #6b5b8f;
-            padding-bottom: 14px;
+
+        .card-text {
+            font-size: 1.6rem;
+            line-height: 1.4;
+            font-weight: 500;
+            min-height: 3.5em;
+            word-break: break-word;
+            color: #ffffff;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            padding: 10px 0;
+            border-left: 3px solid #ffa0d0;
+            padding-left: 18px;
+            margin-bottom: 10px;
         }
-        .mode-panel {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+
+        .card-emoji-decor {
+            font-size: 3rem;
+            opacity: 0.15;
+            position: absolute;
+            bottom: 10px;
+            left: 20px;
+            transform: rotate(-5deg);
+        }
+
+        /* панель кнопок */
+        .button-panel {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
             margin-bottom: 24px;
         }
-        .mode-btn {
-            background: #2c2347;
-            border: 1px solid #51457a;
-            border-radius: 60px;
-            padding: 14px 6px;
+
+        .row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn {
+            flex: 1;
+            background: #2a1f3f;
+            border: 1px solid #5d4a85;
+            border-radius: 50px;
+            padding: 16px 6px;
             font-size: 1.1rem;
             font-weight: 600;
             color: #f0dcff;
-            box-shadow: 0 8px 0 #0e0b1a;
-            transition: all 0.08s linear;
+            box-shadow: 0 7px 0 #130e1f;
+            transition: all 0.07s linear;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -87,166 +133,169 @@
             gap: 6px;
             -webkit-tap-highlight-color: transparent;
         }
-        .mode-btn:active {
-            transform: translateY(6px);
-            box-shadow: 0 2px 0 #0e0b1a;
-        }
-        .mode-btn.soft { background: #3a3361; border-color: #9f8be5; }
-        .mode-btn.hard { background: #632c4b; border-color: #ff7b9c; }
-        .mode-btn.truth { background: #2f5568; border-color: #79d2ff; }
-        .mode-btn.action { background: #5d4751; border-color: #f7b2b2; }
 
-        .random-btn {
+        .btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 2px 0 #130e1f;
+        }
+
+        .btn.soft { background: #3a2f59; border-color: #9b86d1; }
+        .btn.hard { background: #5f2c4a; border-color: #ff7f9f; }
+        .btn.truth { background: #2e4e64; border-color: #7bc8ff; }
+        .btn.action { background: #624758; border-color: #ffb3b3; }
+
+        .btn.random {
             background: linear-gradient(145deg, #b15bff, #8f4eb3);
             border: none;
-            border-radius: 60px;
-            padding: 18px 12px;
-            font-size: 1.6rem;
-            font-weight: bold;
-            color: white;
-            text-shadow: 0 2px 4px black;
-            box-shadow: 0 12px 0 #4d2a75;
+            box-shadow: 0 10px 0 #4d2a75;
+            font-size: 1.5rem;
+            padding: 20px 12px;
+        }
+
+        /* сворачиваемая история */
+        .history-wrapper {
             width: 100%;
-            margin-bottom: 24px;
-            cursor: pointer;
-            transition: 0.08s linear;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .random-btn:active {
-            transform: translateY(8px);
-            box-shadow: 0 4px 0 #4d2a75;
+            max-width: 500px;
+            background: rgba(20, 15, 40, 0.5);
+            backdrop-filter: blur(5px);
+            border-radius: 32px;
+            border: 1px solid #5b4b7a;
+            overflow: hidden;
+            transition: all 0.2s;
         }
 
-        .card-display {
-            background: #1f1935;
-            border-radius: 40px;
-            padding: 28px 20px;
-            border: 2px solid #a67bd2;
-            box-shadow: inset 0 2px 10px #00000088, 0 10px 0 #4c3570;
-            margin-bottom: 26px;
-        }
-        .card-text {
-            font-size: 1.35rem;
-            line-height: 1.5;
-            min-height: 4.5em;
-            word-break: break-word;
-            color: #ffffff;
-            text-shadow: 0 2px 3px black;
-        }
-        .badge {
-            display: inline-block;
-            background: #ff4d7d;
-            border-radius: 50px;
-            padding: 6px 18px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-            margin-bottom: 14px;
-            color: white;
-            text-transform: uppercase;
-        }
-
-        .history-section {
-            background: #282245;
-            border-radius: 28px;
-            padding: 16px 16px 20px;
-            margin-top: 10px;
-        }
-        .history-title {
+        .history-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
-            color: #d3c6ff;
+            padding: 16px 20px;
+            background: #2a1f42;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .history-header span {
+            font-size: 1.2rem;
             font-weight: 600;
-        }
-        .history-list {
-            background: #1a132b;
-            border-radius: 24px;
-            padding: 12px 12px 4px 12px;
-            max-height: 170px;
-            overflow-y: auto;
-            font-size: 0.95rem;
-            color: #cbb6ff;
-            list-style-type: none;
-        }
-        .history-list li {
-            padding: 8px 6px;
-            border-bottom: 1px solid #433b60;
+            color: #d3baff;
             display: flex;
             align-items: center;
             gap: 8px;
         }
-        .clear-btn {
-            background: none;
-            border: 1px solid #8e77b9;
-            color: #dac4ff;
-            padding: 6px 14px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            cursor: pointer;
+
+        .history-header .toggle-icon {
+            font-size: 1.5rem;
+            transition: transform 0.2s;
         }
-        .footer {
-            text-align: center;
-            color: #776c9e;
-            margin-top: 18px;
+
+        .history-content {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.2s ease;
+            background: #1a1330;
+        }
+
+        .history-content.expanded {
+            max-height: 300px; /* достаточно для 10 карт */
+            opacity: 1;
+            overflow-y: auto;
+            padding: 12px 12px 8px 12px;
+        }
+
+        .history-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .history-list li {
+            background: #2e2550;
+            border-radius: 30px;
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            color: #daceff;
+            border-left: 4px solid #b27aff;
+            word-break: break-word;
+        }
+
+        .clear-btn {
+            background: #332b4a;
+            border: 1px solid #a68cd9;
+            color: #e2d1ff;
+            padding: 8px 20px;
+            border-radius: 40px;
             font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .clear-btn:hover {
+            background: #4f3f72;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: #6d5f8f;
+            margin-top: 24px;
+            font-size: 0.85rem;
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>🎲 Правда/Действие</h1>
-        <div class="sub">помощник для @trueora_bot · 200 карт</div>
-
-        <!-- Кнопки выбора режима -->
-        <div class="mode-panel">
-            <button class="mode-btn soft" id="btnSoft">❤ обычные</button>
-            <button class="mode-btn hard" id="btnHard">🔥 запретные</button>
-            <button class="mode-btn truth" id="btnTruth">✅ правда</button>
-            <button class="mode-btn action" id="btnAction">🎭 действие</button>
-        </div>
-
-        <!-- Рандомная кнопка (звезда) -->
-        <button class="random-btn" id="btnRandom">⭐ СЛУЧАЙНАЯ КАРТА</button>
-
-        <!-- Отображение текущей карты -->
-        <div class="card-display" id="cardDisplay">
-            <span class="badge" id="cardTypeBadge">❓ нажми кнопку</span>
+    <!-- Карточка наверху -->
+    <div class="card-main">
+        <div class="card-inner" id="cardInner">
+            <span class="card-badge" id="cardBadge">❓ нажми кнопку</span>
             <div class="card-text" id="cardText">Здесь появится вопрос или задание</div>
-        </div>
-
-        <!-- История последних карт (до 10) -->
-        <div class="history-section">
-            <div class="history-title">
-                <span>📋 последние карты</span>
-                <button class="clear-btn" id="clearHistory">очистить</button>
-            </div>
-            <ul class="history-list" id="historyList">
-                <li style="color: #6b5d8f;">— пока ничего —</li>
-            </ul>
-        </div>
-        <div class="footer">
-            <span>📄 правила: "нет" не принимается · карты не повторяются в боте</span>
+            <div class="card-emoji-decor">✨</div>
         </div>
     </div>
 
+    <!-- Кнопки управления -->
+    <div class="button-panel">
+        <div class="row">
+            <button class="btn soft" id="btnSoft">❤ обычные</button>
+            <button class="btn hard" id="btnHard">🔥 запретные</button>
+        </div>
+        <div class="row">
+            <button class="btn truth" id="btnTruth">✅ правда</button>
+            <button class="btn action" id="btnAction">🎭 действие</button>
+        </div>
+        <button class="btn random" id="btnRandom">⭐ СЛУЧАЙНАЯ КАРТА</button>
+    </div>
+
+    <!-- Сворачиваемая история -->
+    <div class="history-wrapper">
+        <div class="history-header" id="historyHeader">
+            <span>📋 История <span class="history-count" id="historyCount">(0)</span></span>
+            <span class="toggle-icon" id="toggleIcon">▼</span>
+        </div>
+        <div class="history-content" id="historyContent">
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 8px;">
+                <button class="clear-btn" id="clearHistory">очистить</button>
+            </div>
+            <ul class="history-list" id="historyList">
+                <li style="color: #7f72a5;">— пока ничего —</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        ⚡ правило: слово «нет» не принимается · карты не повторяются в боте
+    </div>
+
     <script>
-        // ================= Telegram Mini App Initialization =================
-        // Убеждаемся, что SDK загружен
+        // Telegram Mini App
         const tg = window.Telegram?.WebApp;
         if (tg) {
-            tg.ready();          // Сообщаем Telegram, что приложение готово
-            tg.expand();         // Разворачиваем на весь экран
-            // Если хочешь позже отправлять данные в бот:
-            // tg.sendData(JSON.stringify({...}));
+            tg.ready();
+            tg.expand();
         }
 
-        // ================= 200 КАРТ (точно как в Python-боте) =================
-        // -------- оригинальные (первые 40) --------
+        // ================= ВСЕ КАРТЫ (200 шт) =================
         const originalRegular = [
             "Правда: В какой момент ты понял(а), что тебе со мной не просто интересно, а по-настоящему тепло?",
             "Действие: Напиши мне комплимент, в котором будет минимум три прилагательных, описывающих то, что ты ценишь во мне.",
@@ -278,8 +327,7 @@
             "Действие: Загадай желание на наш счёт и напиши его вслух — даже если оно не сбудется сразу.",
             "Правда: Что тебе хочется сделать для меня прямо сейчас, но ты не можешь из-за расстояния?",
             "Действие: Скажи мне что-то шёпотом в голосовом, что обычно говорят только очень близким людям."
-        ];
-
+        ];  // здесь должен быть полный массив из 200 карт
         const originalHard = [
             "Правда 🔞: Назови три самые «запретные» или грязные фантазии, которые ты никогда не решался(ась) озвучить партнеру вживую.",
             "Действие 🔞: Включи камеру, смотри в объектив и медленно проведи рукой по самым чувствительным местам (через одежду или без — на твой страх и риск), задерживаясь там на пару секунд.",
@@ -292,8 +340,6 @@
             "Правда 🔞: Приходилось ли тебе имитировать удовольствие? Если да — расскажи одну ситуацию (не обязательно про меня, просто опыт).",
             "Действие 🔞: Отправь фото части тела (не обязательно обнажённой, но интимно-напряжённой), которая у тебя сейчас наиболее чувствительна или которой тебе хочется, чтобы я коснулся(ась)."
         ];
-
-        // ----- новые обычные правды (добиваем до 50) -----
         const newRegularTruths = [
             "Правда: Что в моей внешности тебе нравится больше всего?",
             "Правда: Какой момент с нашей переписки заставил тебя покраснеть?",
@@ -331,8 +377,6 @@
             "Правда: Какой язык ты хотел(а) бы выучить?",
             "Правда: Какое место на Земле ты мечтаешь посетить?"
         ];
-
-        // ----- новые обычные действия (добиваем до 50) -----
         const newRegularActions = [
             "Действие: Отправь мне своё любимое фото (не обязательно своё).",
             "Действие: Запиши голосовое, как ты смеёшься.",
@@ -370,8 +414,6 @@
             "Действие: Отправь фото своего рабочего места.",
             "Действие: Скажи мне что-то на языке, который я не знаю, и переведи."
         ];
-
-        // ----- новые жёсткие правды (добиваем до 50) -----
         const newHardTruths = [
             "Правда 🔞: Что тебя заводит сильнее всего?",
             "Правда 🔞: Какая часть твоего тела самая чувствительная?",
@@ -419,8 +461,6 @@
             "Правда 🔞: Что для тебя измена?",
             "Правда 🔞: Ты ревнуешь партнёра к его прошлому?"
         ];
-
-        // ----- новые жёсткие действия (добиваем до 50) -----
         const newHardActions = [
             "Действие 🔞: Опиши в деталях, как бы ты хотел(а) меня раздеть.",
             "Действие 🔞: Напиши, что ты сделаешь со мной при первой встрече.",
@@ -469,7 +509,10 @@
             "Действие 🔞: Напиши, какую музыку ты хочешь, чтобы я включил(а), когда мы будем близки."
         ];
 
-        // ----- СОБИРАЕМ ПОЛНЫЕ КАТЕГОРИИ (как в боте) -----
+        // Сборка (скопируй сюда свои массивы из предыдущей версии, они не изменились)
+        // Для краткости я не вставляю здесь все 200 строк, но ты просто скопируй их из старого файла
+        // Вставь сюда свои полные массивы regularTruths, regularActions, hardTruths, hardActions
+        // Пример:
         const regularTruths = originalRegular.filter(c => c.startsWith("Правда:")).concat(newRegularTruths);
         const regularActions = originalRegular.filter(c => c.startsWith("Действие:")).concat(newRegularActions);
         const hardTruths = originalHard.filter(c => c.includes("Правда")).concat(newHardTruths);
@@ -480,33 +523,39 @@
         const allCards = allRegular.concat(allHard);
 
         // ===== состояние =====
-        let history = []; // последние карты (макс 10)
+        let history = [];
+        let isHistoryExpanded = false;
 
-        // DOM элементы
         const cardTextEl = document.getElementById('cardText');
-        const cardBadgeEl = document.getElementById('cardTypeBadge');
+        const cardBadgeEl = document.getElementById('cardBadge');
         const historyListEl = document.getElementById('historyList');
+        const historyCountEl = document.getElementById('historyCount');
+        const historyContent = document.getElementById('historyContent');
+        const toggleIcon = document.getElementById('toggleIcon');
+
+        // Сворачивание / разворачивание
+        document.getElementById('historyHeader').addEventListener('click', () => {
+            isHistoryExpanded = !isHistoryExpanded;
+            if (isHistoryExpanded) {
+                historyContent.classList.add('expanded');
+                toggleIcon.textContent = '▲';
+            } else {
+                historyContent.classList.remove('expanded');
+                toggleIcon.textContent = '▼';
+            }
+        });
 
         function pickRandom(arr) {
-            if (!arr.length) return null;
             return arr[Math.floor(Math.random() * arr.length)];
-        }
-
-        function getCardTypeFromText(card) {
-            if (card.includes('🔞')) return 'hard';
-            if (card.startsWith('Правда')) return 'truth';
-            if (card.startsWith('Действие')) return 'action';
-            return 'unknown';
         }
 
         function updateDisplay(card, sourceType = 'random') {
             if (!card) {
-                cardTextEl.innerText = '❌ ничего не найдено';
-                cardBadgeEl.innerText = '❌ ошибка';
+                cardTextEl.innerText = '❌ ошибка';
+                cardBadgeEl.innerText = '❌';
                 return;
             }
 
-            // Определяем значок
             let badgeText = '';
             if (sourceType === 'soft') badgeText = '❤ обычная';
             else if (sourceType === 'hard') badgeText = '🔥 запретная';
@@ -524,59 +573,46 @@
         }
 
         function renderHistory() {
+            historyCountEl.textContent = `(${history.length})`;
             if (history.length === 0) {
-                historyListEl.innerHTML = '<li style="color: #6b5d8f;">— пока ничего —</li>';
+                historyListEl.innerHTML = '<li style="color: #7f72a5;">— пока ничего —</li>';
                 return;
             }
             let html = '';
             history.forEach(card => {
-                let emoji = '';
-                if (card.includes('🔞')) emoji = '🔞';
-                else if (card.startsWith('Правда')) emoji = '❓';
-                else if (card.startsWith('Действие')) emoji = '🎭';
-                else emoji = '📄';
-                html += `<li>${emoji} ${card.substring(0, 50)}${card.length > 50 ? '…' : ''}</li>`;
+                let emoji = card.includes('🔞') ? '🔞' : (card.startsWith('Правда') ? '❓' : '🎭');
+                html += `<li>${emoji} ${card.substring(0, 60)}${card.length > 60 ? '…' : ''}</li>`;
             });
             historyListEl.innerHTML = html;
         }
 
-        // ----- Обработчики кнопок -----
+        // Обработчики кнопок
         document.getElementById('btnRandom').addEventListener('click', () => {
-            const card = pickRandom(allCards);
-            updateDisplay(card, 'random');
+            updateDisplay(pickRandom(allCards), 'random');
         });
-
         document.getElementById('btnSoft').addEventListener('click', () => {
-            const card = pickRandom(allRegular);
-            updateDisplay(card, 'soft');
+            updateDisplay(pickRandom(allRegular), 'soft');
         });
-
         document.getElementById('btnHard').addEventListener('click', () => {
-            const card = pickRandom(allHard);
-            updateDisplay(card, 'hard');
+            updateDisplay(pickRandom(allHard), 'hard');
         });
-
         document.getElementById('btnTruth').addEventListener('click', () => {
             const allTruths = regularTruths.concat(hardTruths);
-            const card = pickRandom(allTruths);
-            updateDisplay(card, 'truth');
+            updateDisplay(pickRandom(allTruths), 'truth');
         });
-
         document.getElementById('btnAction').addEventListener('click', () => {
             const allActions = regularActions.concat(hardActions);
-            const card = pickRandom(allActions);
-            updateDisplay(card, 'action');
+            updateDisplay(pickRandom(allActions), 'action');
         });
-
-        document.getElementById('clearHistory').addEventListener('click', () => {
+        document.getElementById('clearHistory').addEventListener('click', (e) => {
+            e.stopPropagation(); // не закрываем историю
             history = [];
             renderHistory();
         });
 
-        // Инициализация: показать что-то сразу
+        // Первая карточка
         window.addEventListener('load', () => {
-            const card = pickRandom(allCards);
-            updateDisplay(card, 'random');
+            updateDisplay(pickRandom(allCards), 'random');
         });
     </script>
 </body>
